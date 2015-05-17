@@ -108,8 +108,13 @@
     End Sub
 
     Private Sub wpm_PlayStateChange(sender As Object, e As AxWMPLib._WMPOCXEvents_PlayStateChangeEvent) Handles wpm.PlayStateChange
-      
+        While shuffle.CheckOnClick = True
+            tempInt = r.Next(0, ListBox1.Items.Count + 1)
+            wpm.URL = ListBox1.Items(tempInt)
+        End While
+        While RepeatToolStripMenuItem1.CheckOnClick = True
+            wpm.URL = currentSong
+            End
     End Sub
-
 End Class
 
