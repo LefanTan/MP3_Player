@@ -1,24 +1,24 @@
 ﻿Public Class Form1
+
+    'Declare External Variables'
     Dim r As New Random
     Dim tempInt As Integer
     Dim currentTrack As Integer = 0
     Dim currentSong As String = Nothing
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles ButFolder.Click
+        'Show Browser Url in Textbox- txtfolder'
         If FolderBrowserDialog1.ShowDialog() = DialogResult.OK Then
-            txtfolder.Text = FolderBrowserDialog1.SelectedPath.ToString
+            txtfolder.Text = FolderBrowserDialog1.SelectedPath.ToString 'convert to string'
         End If
 
     End Sub
     Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles ButClose.Click
+        'minimize program to taskbar'
         Me.Visible = False
     End Sub
 
     Private Sub ListBox1_DoubleClick(sender As Object, e As EventArgs) Handles ListBox1.DoubleClick
-
-    End Sub
-
-    Private Sub ListBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBox1.SelectedIndexChanged
-
+        'Play song when double clicked'
         RichTextBox1.Clear()
         currentSong = ListBox1.Text
         wpm.URL = currentSong
@@ -27,7 +27,6 @@
         Dim textPlay As String = "Song playing:" & System.Environment.NewLine & curSongPlayin
         RichTextBox1.AppendText(textPlay)
     End Sub
-
     Private Sub txtfolder_TextChanged(sender As Object, e As EventArgs) Handles txtfolder.TextChanged
 
         ListBox1.Items.Clear()
@@ -36,7 +35,7 @@
         Dim pathName As String = FolderBrowserDialog1.SelectedPath.ToString
         If Not txtfolder.Text = "" Then
             For Each item As String In My.Computer.FileSystem.GetFiles(txtfolder.Text, Microsoft.VisualBasic.FileIO.SearchOption.SearchTopLevelOnly, "*.mp3")
-                ListBox1.Items.Add(item)
+                ListBox1.Items.Add(item) 'add items to listbox'
             Next
 
 
@@ -50,7 +49,7 @@
     Private Sub OpenToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OpenToolStripMenuItem.Click
 
         RichTextBox1.Clear()
-
+        'Enable program to open a single song'
 
 
         If OpenFileDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
@@ -68,6 +67,8 @@
     End Sub
 
     Private Sub PlayPauseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PlayPauseToolStripMenuItem.Click
+
+        'Play/Pause function when minimize'
         If wpm.playState = WMPLib.WMPPlayState.wmppsPaused Then
             wpm.Ctlcontrols.play()
         ElseIf wpm.playState = WMPLib.WMPPlayState.wmppsPlaying Then
@@ -80,6 +81,7 @@
     End Sub
 
     Private Sub NextToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NextToolStripMenuItem.Click
+        'next function'
         If currentTrack = (ListBox1.Items.Count - 1) Then
             wpm.URL = ListBox1.Items(0)
             currentTrack = Nothing
@@ -91,6 +93,7 @@
 
 
     Private Sub PreviousToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PreviousToolStripMenuItem.Click
+        'Previous Function'
         If currentTrack = 0 Then
             wpm.URL = ListBox1.Items(ListBox1.Items.Count - 1)
             currentTrack = ListBox1.Items.Count - 1
@@ -105,13 +108,7 @@
     End Sub
 
     Private Sub wpm_PlayStateChange(sender As Object, e As AxWMPLib._WMPOCXEvents_PlayStateChangeEvent) Handles wpm.PlayStateChange
-        While shuffle.CheckOnClick = True
-            tempInt = r.Next(0, ListBox1.Items.Count + 1)
-            wpm.URL = ListBox1.Items(tempInt)
-        End While
-        While RepeatToolStripMenuItem1.CheckOnClick = True
-            wpm.URL = currentSong
-        End While
+      
     End Sub
 
 End Class
